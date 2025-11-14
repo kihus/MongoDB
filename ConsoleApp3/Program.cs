@@ -17,13 +17,16 @@ collection.InsertOne(user);
 var manyUsers = new List<User> {
 	(new User("Rogerio", "2022")),
 	(new User("Marcola", "2023")),
-	(new User("Gustavo", "2024"))
+	(new User("Gustavo", "2024")),
+	(new User("Guilherme", "2025")),
+	(new User("Guto", "2026")),
+	(new User("Gerson", "2027"))
 };
 
 collection.InsertMany(manyUsers);
 
 // list users
-var users = collection.Find(x => true).ToList();
+var users = await collection.FindAsync(x => true).Result.ToListAsync();
 foreach (var item in users)
 {
 	Console.WriteLine(item);
@@ -36,7 +39,7 @@ collection.ReplaceOne(x => x.Login == usuarioReplace.Login, usuarioReplace); // 
 Console.WriteLine(usuarioReplace);
 
 // update data in user
-var usuarioUpdate = collection.UpdateOne(x => x.Login == "Gustavo", 
+var usuarioUpdate = collection.UpdateOne(x => x.Login == "Gustavo",
 	Builders<User> // make BSON to MongoDB
 	.Update
 	.Set(x => x.Password, "2000"));
@@ -50,3 +53,13 @@ var updateDefinition = Builders<User>
 
 var userUpdated = collection.UpdateOne(x => x.Login == "Gustavo", updateDefinition); // pass definition builder 
 
+// delete 
+collection.DeleteOne(x => x.Login == "Virginia");
+
+// filter data
+var filterCaseInsensitive = Builders<User>.Filter.Regex(x => x.Login, "^G"); // 
+
+var filterUsers = collection.Find(filterCaseInsensitive).ToList();
+
+Console.WriteLine("Listagem de usuarios que comeca com G");
+filterUsers.ForEach(x => Console.WriteLine(x));

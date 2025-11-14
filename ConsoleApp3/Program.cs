@@ -9,18 +9,18 @@ var database = client.GetDatabase("InterAcaoMongo");
 // create/user database
 var collection = database.GetCollection<User>("Usuarios");
 
-//// add one user
-//var user = new User("Fabricio", "fabi123");
-//collection.InsertOne(user);
+// add one user
+var user = new User("Fabricio", "fabi123");
+collection.InsertOne(user);
 
-//// add many users
-//var manyUsers = new List<User> {
-//	(new User("Rogerio", "2022")),
-//	(new User("Marcola", "2023")),
-//	(new User("Gustavo", "2024"))
-//};
+// add many users
+var manyUsers = new List<User> {
+	(new User("Rogerio", "2022")),
+	(new User("Marcola", "2023")),
+	(new User("Gustavo", "2024"))
+};
 
-//collection.InsertMany(manyUsers);
+collection.InsertMany(manyUsers);
 
 // list users
 var users = collection.Find(x => true).ToList();
